@@ -17,7 +17,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import {WebView} from 'react-native-webview';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 import ReligionSong from './religion-playlistScreen';
-import {ScrollView} from 'react-native-gesture-handler';
+import {
+  ScrollView,
+  TouchableNativeFeedback,
+  TouchableWithoutFeedback,
+} from 'react-native-gesture-handler';
 
 const BUTTON_HEIGHT = RFValue(60);
 const BUTTON_WIDTH = RFValue(200);
@@ -29,6 +33,11 @@ var color1 = '#FFA7E0';
 var color2 = '#8692FF';
 var color3 = '#58FBAA';
 var color4 = '#3BB2B8';
+
+const pauseColor1 = '#4EC3FF';
+const pauseColor2 = '#1C6FCE';
+const playColor1 = '#F54EA2';
+const playColor2 = '#FF7676';
 
 var deviceHeight = Dimensions.get('window').height;
 
@@ -167,13 +176,30 @@ export default function LandingScreen({navigation}) {
     }
   }
 
+  checkPlayPauseCondition = () => {
+    if (
+      global.playbackTrack == 'local-track' &&
+      (playbackState == '3' || playbackState == 'playing')
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  renderLinerColorCode = () => {
+    if (checkPlayPauseCondition()) {
+      return [pauseColor1, pauseColor2];
+    }
+    return [playColor1, playColor2];
+  };
+
   renderPlayPauseButton = () => {
     return (
       <View style={{height: 40, width: 100}}>
         <LinearGradient
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}
-          colors={[color1, color1, color2]}
+          colors={renderLinerColorCode()}
           style={{
             height: 40,
             width: 100,
@@ -187,15 +213,10 @@ export default function LandingScreen({navigation}) {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            {global.playbackTrack == 'local-track' &&
-            (playbackState == '3' || playbackState == 'playing') ? (
-              <Text style={{fontSize: 14, color: '#000', fontWeight: 'bold'}}>
-                Pause
-              </Text>
+            {checkPlayPauseCondition() ? (
+              <Text style={styles.pausePlayText}>Pause</Text>
             ) : (
-              <Text style={{fontSize: 14, color: '#000', fontWeight: 'bold'}}>
-                Play
-              </Text>
+              <Text style={styles.pausePlayText}>Play</Text>
             )}
           </TouchableOpacity>
         </LinearGradient>
@@ -212,36 +233,37 @@ export default function LandingScreen({navigation}) {
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}>
-        <View style={styles.modalMainView}>
-          <View style={styles.subModalView}>
-            <View style={styles.secondView}>
-              <TouchableOpacity
-                style={styles.closeTouchButton}
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                }}>
-                <MIcon name="close" color={'white'} size={25} />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.trackImageModalView}>
-              {trackImage ? (
-                <Image
-                  source={{
-                    uri: trackImage,
-                  }}
-                  style={styles.imageStyle}
-                  resizeMode={'cover'}
-                />
-              ) : null}
-              <Text style={styles.songNameText} numberOfLines={2}>
-                {songName}
-              </Text>
-              <View style={styles.playPauseButtonView}>
-                {renderPlayPauseButton()}
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => setModalVisible(!modalVisible)}>
+          <View style={styles.modalMainView}>
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => console.log('disable')}>
+              <View style={styles.subModalView}>
+                <View style={styles.trackImageModalView}>
+                  {trackImage ? (
+                    <Image
+                      source={{
+                        uri: trackImage,
+                      }}
+                      style={styles.imageStyle}
+                      resizeMode={'cover'}
+                    />
+                  ) : null}
+                  <View style={styles.contentModal}>
+                    <Text style={styles.songNameText} numberOfLines={2}>
+                      {songName}
+                    </Text>
+                    <View style={styles.playPauseButtonView}>
+                      {renderPlayPauseButton()}
+                    </View>
+                  </View>
+                </View>
               </View>
-            </View>
+            </TouchableOpacity>
           </View>
-        </View>
+        </TouchableOpacity>
       </Modal>
     );
   };
@@ -265,7 +287,7 @@ export default function LandingScreen({navigation}) {
                 <LinearGradient
                   start={{x: 0, y: 0}}
                   end={{x: 1, y: 0}}
-                  colors={[color1, color1, color2]}
+                  colors={[color1, color2]}
                   style={styles.linearGradient}>
                   <View style={styles.button}>
                     {global.playbackTrack == 'local-track' &&
@@ -496,10 +518,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   subModalView: {
-    backgroundColor: '#fff',
+    backgroundColor: '#3A4667',
     width: width - 50,
-    height: height - 100,
+    height: height / 1.5,
     borderRadius: 10,
+    borderTopLeftRadius: RFPercentage(5),
+    borderTopRightRadius: RFPercentage(5),
+    borderBottomLeftRadius: RFPercentage(2),
+    borderBottomRightRadius: RFPercentage(2),
   },
   secondView: {
     width: '100%',
@@ -517,13 +543,29 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 1,
   },
-  trackImageModalView: {flex: 1, alignItems: 'center'},
-  imageStyle: {width: '100%', height: height - 200},
-  playPauseButtonView: {marginTop: 5},
+  trackImageModalView: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  imageStyle: {
+    width: '100%',
+    height: height / 2.8,
+    borderRadius: RFPercentage(5),
+  },
+  playPauseButtonView: {marginTop: 30},
   songNameText: {
     fontSize: 14,
-    color: '#2d2d2d',
+    color: '#fff',
     textAlign: 'center',
     marginTop: 5,
+    fontWeight: 'bold',
+  },
+
+  pausePlayText: {fontSize: 14, color: '#fff', fontWeight: 'bold'},
+  contentModal: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
   },
 });

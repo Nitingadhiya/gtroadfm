@@ -28,6 +28,11 @@ var color2 = '#8692FF';
 var color3 = '#58FBAA';
 var color4 = '#3BB2B8';
 
+const pauseColor1 = '#4EC3FF';
+const pauseColor2 = '#1C6FCE';
+const playColor1 = '#F54EA2';
+const playColor2 = '#FF7676';
+
 var deviceHeight = Dimensions.get('window').height;
 
 const {width, height} = Dimensions.get('window');
@@ -169,13 +174,30 @@ export default function ReligionSong() {
     }
   }
 
+  checkPlayPauseCondition = () => {
+    if (
+      global.playbackTrack == 'local-track-religion' &&
+      (playbackState == '3' || playbackState == 'playing')
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  renderLinerColorCode = () => {
+    if (checkPlayPauseCondition()) {
+      return [pauseColor1, pauseColor2];
+    }
+    return [playColor1, playColor2];
+  };
+
   renderPlayPauseButton = () => {
     return (
       <View style={{height: 40, width: 100}}>
         <LinearGradient
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}
-          colors={[color1, color1, color2]}
+          colors={renderLinerColorCode()}
           style={{
             height: 40,
             width: 100,
@@ -189,15 +211,10 @@ export default function ReligionSong() {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            {global.playbackTrack == 'local-track-religion' &&
-            (playbackState == '3' || playbackState == 'playing') ? (
-              <Text style={{fontSize: 14, color: '#000', fontWeight: 'bold'}}>
-                Pause
-              </Text>
+            {checkPlayPauseCondition() ? (
+              <Text style={styles.pausePlayText}>Pause</Text>
             ) : (
-              <Text style={{fontSize: 14, color: '#000', fontWeight: 'bold'}}>
-                Play
-              </Text>
+              <Text style={styles.pausePlayText}>Play</Text>
             )}
           </TouchableOpacity>
         </LinearGradient>
@@ -214,39 +231,119 @@ export default function ReligionSong() {
         onRequestClose={() => {
           setModalVisible(!modalReligionVisible);
         }}>
-        <View style={styles.modalMainView}>
-          <View style={styles.subModalView}>
-            <View style={styles.secondView}>
-              <TouchableOpacity
-                style={styles.closeTouchButton}
-                onPress={() => {
-                  setModalVisible(!modalReligionVisible);
-                }}>
-                <MIcon name="close" color={'white'} size={25} />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.trackImageModalView}>
-              {trackImage ? (
-                <Image
-                  source={{
-                    uri: trackImage,
-                  }}
-                  style={styles.imageStyle}
-                  resizeMode={'center'}
-                />
-              ) : null}
-              <Text style={styles.songNameText} numberOfLines={2}>
-                {songNameReligion}
-              </Text>
-              <View style={styles.playPauseButtonView}>
-                {renderPlayPauseButton()}
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => setModalVisible(!modalReligionVisible)}>
+          <View style={styles.modalMainView}>
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => console.log('disable')}>
+              <View style={styles.subModalView}>
+                <View style={styles.trackImageModalView}>
+                  {trackImage ? (
+                    <Image
+                      source={{
+                        uri: trackImage,
+                      }}
+                      style={styles.imageStyle}
+                      resizeMode={'cover'}
+                    />
+                  ) : null}
+                  <View style={styles.contentModal}>
+                    <Text style={styles.songNameText} numberOfLines={2}>
+                      {songNameReligion}
+                    </Text>
+                    <View style={styles.playPauseButtonView}>
+                      {renderPlayPauseButton()}
+                    </View>
+                  </View>
+                </View>
               </View>
-            </View>
+            </TouchableOpacity>
           </View>
-        </View>
+        </TouchableOpacity>
       </Modal>
     );
   };
+
+  // renderPlayPauseButton = () => {
+  //   return (
+  //     <View style={{height: 40, width: 100}}>
+  //       <LinearGradient
+  //         start={{x: 0, y: 0}}
+  //         end={{x: 1, y: 0}}
+  //         colors={[color1, color1, color2]}
+  //         style={{
+  //           height: 40,
+  //           width: 100,
+  //           borderRadius: 20,
+  //         }}>
+  //         <TouchableOpacity
+  //           onPress={toggleReligionPlayback}
+  //           style={{
+  //             height: 40,
+  //             width: 100,
+  //             justifyContent: 'center',
+  //             alignItems: 'center',
+  //           }}>
+  //           {global.playbackTrack == 'local-track-religion' &&
+  //           (playbackState == '3' || playbackState == 'playing') ? (
+  //             <Text style={{fontSize: 14, color: '#000', fontWeight: 'bold'}}>
+  //               Pause
+  //             </Text>
+  //           ) : (
+  //             <Text style={{fontSize: 14, color: '#000', fontWeight: 'bold'}}>
+  //               Play
+  //             </Text>
+  //           )}
+  //         </TouchableOpacity>
+  //       </LinearGradient>
+  //     </View>
+  //   );
+  // };
+
+  // renderModalView = () => {
+  //   return (
+  //     <Modal
+  //       animationType="slide"
+  //       transparent={true}
+  //       visible={modalReligionVisible}
+  //       onRequestClose={() => {
+  //         setModalVisible(!modalReligionVisible);
+  //       }}>
+  //       <View style={styles.modalMainView}>
+  //         <View style={styles.subModalView}>
+  //           <View style={styles.secondView}>
+  //             <TouchableOpacity
+  //               style={styles.closeTouchButton}
+  //               onPress={() => {
+  //                 setModalVisible(!modalReligionVisible);
+  //               }}>
+  //               <MIcon name="close" color={'white'} size={25} />
+  //             </TouchableOpacity>
+  //           </View>
+  //           <View style={styles.trackImageModalView}>
+  //             {trackImage ? (
+  //               <Image
+  //                 source={{
+  //                   uri: trackImage,
+  //                 }}
+  //                 style={styles.imageStyle}
+  //                 resizeMode={'center'}
+  //               />
+  //             ) : null}
+  //             <Text style={styles.songNameText} numberOfLines={2}>
+  //               {songNameReligion}
+  //             </Text>
+  //             <View style={styles.playPauseButtonView}>
+  //               {renderPlayPauseButton()}
+  //             </View>
+  //           </View>
+  //         </View>
+  //       </View>
+  //     </Modal>
+  //   );
+  // };
 
   return (
     <View paddingTop={'0%'} styles={[styles.leftCont, {marginBottom: 20}]}>
@@ -259,7 +356,7 @@ export default function ReligionSong() {
           <LinearGradient
             start={{x: 0, y: 0}}
             end={{x: 1, y: 0}}
-            colors={[color1, color1, color2]}
+            colors={[color1, color2]}
             style={styles.linearGradient}>
             <View style={styles.button}>
               {global.playbackTrack == 'local-track-religion' &&
@@ -275,9 +372,8 @@ export default function ReligionSong() {
                 </View>
               ) : (
                 <View style={styles.textStyles}>
-                  <Text>sad</Text>
                   <Icons
-                    name="microphone"
+                    name="play"
                     color={'white'}
                     size={50}
                     alignSelf={'center'}
@@ -460,10 +556,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   subModalView: {
-    backgroundColor: '#fff',
+    backgroundColor: '#3A4667',
     width: width - 50,
-    height: height - 100,
+    height: height / 1.5,
     borderRadius: 10,
+    borderTopLeftRadius: RFPercentage(5),
+    borderTopRightRadius: RFPercentage(5),
+    borderBottomLeftRadius: RFPercentage(2),
+    borderBottomRightRadius: RFPercentage(2),
   },
   secondView: {
     width: '100%',
@@ -482,13 +582,25 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   trackImageModalView: {flex: 1, alignItems: 'center'},
-  imageStyle: {width: '100%', height: height - 200},
-  playPauseButtonView: {marginTop: 5},
+  imageStyle: {
+    width: '100%',
+    height: height / 2.8,
+    borderRadius: RFPercentage(5),
+  },
+  playPauseButtonView: {marginTop: 30},
   songNameText: {
     fontSize: 14,
-    color: '#2d2d2d',
+    color: '#fff',
     textAlign: 'center',
     marginTop: 5,
-    marginHorizontal: 10,
+    fontWeight: 'bold',
+  },
+
+  pausePlayText: {fontSize: 14, color: '#fff', fontWeight: 'bold'},
+  contentModal: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
   },
 });
