@@ -1,0 +1,30 @@
+[
+  {
+    "id": "1111",
+    "url": "https://s3.radio.co/s4137c52f5/listen?.mpeg",
+    "title": "Longing",
+    "artist": "111",
+    "artwork": "https://picsum.photos/200"
+  },
+  {
+    "id": "2222",
+    "url": "https://s3.radio.co/s4137c52f5/listen?.mpeg",
+    "title": "Soul Searching (Demo)",
+    "artist": "2222",
+    "artwork": "https://picsum.photos/200"
+  },
+  {
+    "id": "3333",
+    "url": "https://s3.radio.co/s4137c52f5/listen",
+    "title": "Lullaby (Demo)",
+    "artist": "33333",
+    "artwork": "https://picsum.photos/200"
+  },
+  {
+    "id": "4444",
+    "url": "https://s3.radio.co/s4137c52f5/listen?.mp3",
+    "title": "Rhythm City (Demo)",
+    "artist": "44444s",
+    "artwork": "https://picsum.photos/200"
+  }
+]
