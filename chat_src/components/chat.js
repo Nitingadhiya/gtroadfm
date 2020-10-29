@@ -15,6 +15,9 @@ import {
 } from "react-native";
 import { AudioRecorder, AudioUtils } from "react-native-audio";
 import propTypes from "prop-types";
+import _ from 'lodash'
+import database from '@react-native-firebase/database';
+
 
 
 import { RNS3 } from "react-native-aws3";
@@ -77,9 +80,37 @@ export default class Chat extends Component {
             MeteringEnabled: true,
             IncludeBase64: true,
             AudioEncodingBitRate: 32000
-        }
+        },
+        disabledChatTextBox: false
     };
+
+    async checkExistsUserID(){
+        const userData = await AsyncStorage.getItem('User_data');
+        console.log(userData);
+        const dataParse = JSON.parse(userData);
+        const email = _.get(dataParse,'email','');
+        console.log(email,'emamm')
+        database()
+        .ref(`/users`)
+        .on('value', snapshot => {
+          console.log('User data: ', snapshot.val());
+          const record = snapshot.val();
+            const valueRecord = _.find(record,{ email :  email});
+            if(valueRecord && !valueRecord.status) {
+                this.setState({
+                    disabledChatTextBox: true
+                })
+              console.log('value')
+            } else {
+                this.setState({
+                    disabledChatTextBox: false
+                })
+            }
+        });
+      }
+
     componentWillMount() {
+      this.checkExistsUserID();
         // console.log(AwsConfig, "awsconfig")
         // console.log(this.props, "chat props *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*--*-*-*-*-*-*-*-*-")
         this.chatsFromFB = firebaseDB.ref(`/chat/${this.props.user.roomName}`);
@@ -423,6 +454,8 @@ export default class Chat extends Component {
     }
     
     renderAndroidMicrophone() {
+        const {disabledChatTextBox} = this.state;
+        if(disabledChatTextBox) { return null;}
         if (Platform.OS === "android") {
             return (
                 // <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={[color1,color1, color2 ]} style={styles.linearGradient}>
@@ -471,8 +504,9 @@ export default class Chat extends Component {
 
     render() {
         const { user } = this.props; // wherever you user info is
+        // const disable = false;
         // console.log('chat render |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||', user, 'chat render |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||');
-        
+        const {disabledChatTextBox} = this.state;
         return (
             
             <SafeAreaView style={{ flex: 1 }}>
@@ -488,6 +522,9 @@ export default class Chat extends Component {
                 <GiftedChat
                     messages={this.state.messages}
                     onSend={messages => this.onSend(messages)}
+                    minInputToolbarHeight={0}
+                    renderChatFooter={()=> !disabledChatTextBox? <View style={{ height: 40}} /> : null}
+                    renderInputToolbar={disabledChatTextBox ? () => null : undefined}
                     alwaysShowSend
                     showUserAvatar
                     isAnimated
@@ -498,7 +535,7 @@ export default class Chat extends Component {
                     onPressAvatar={this.handleAvatarPress}
                     renderMessageAudio = {this.renderAudio}
                     textInputStyle = {{color:'white', paddingLeft:30}}
-                    containerStyle={{backgroundColor: '#3A4667' }}
+                    containerStyle={{backgroundColor: '#3A4667', }}
                     placeholderTextColor="white"
               
                     listViewProps = {

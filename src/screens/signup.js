@@ -5,6 +5,8 @@ import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-community/async-storage';
 import { StackActions } from '@react-navigation/native';
+import _ from 'lodash';
+import database from '@react-native-firebase/database';
 
 export const BUTTON_HEIGHT = 50;
 export const BUTTON_WIDTH = 150;
@@ -30,7 +32,8 @@ export default class signUp extends Component {
     firebase
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(() => {
+      .then((res) => {
+        this.createNewUserFirebase(res);
           user_data.email = this.state.email,
           user_data.password = this.state.password,
           user_data.login = 'yes',
@@ -40,6 +43,25 @@ export default class signUp extends Component {
           );
     })
       .catch(error => this.setState({ errorMessage: error.message }))
+  }
+
+  createNewUserFirebase(res){
+    const uId = _.get(res,'user.uid','');
+    const email = _.get(res,'user.email','');
+
+  const newReference = database()
+    .ref('/users')
+    .push();
+  
+  console.log('Auto generated key: ', newReference.key);
+  
+  newReference
+    .set({
+      email: email,
+      status: 1,
+      id: uId,
+    })
+    .then(() => console.log('Data updated.'));
   }
 
     render() {

@@ -139,6 +139,10 @@ android {
         multiDexEnabled true
         // implementation 'com.android.support:multidex:1.0.3'
     }
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
     splits {
         abi {
             reset()
@@ -200,6 +204,8 @@ android {
 }
 
 dependencies {
+    implementation 'com.facebook.soloader:soloader:0.9.0+'
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
@@ -235,3 +241,5 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services' // <- Add this line

@@ -6,6 +6,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import LinearGradient from 'react-native-linear-gradient';
 import { StackActions } from '@react-navigation/native';
+import {firebaseDB} from "../../chat_src/config/FirebaseConfig";
+import _ from 'lodash';
 
 export const BUTTON_HEIGHT = RFValue(60);
 export const BUTTON_WIDTH = RFValue(150);
@@ -24,6 +26,9 @@ const image = require('../../assets/Mask.png');
 const image2 = require('../../assets/Group-250.png');
 
 var provider = new firebase.auth.GoogleAuthProvider();
+import database from '@react-native-firebase/database';
+
+
 
 // const image = require('../../assets/bg11r.jpg');
 
@@ -36,7 +41,10 @@ export default class Login extends Component {
      .auth()
      .signInWithEmailAndPassword(this.state.email, this.state.password)
      .then((res) => {
+       console.log(res,'res ** ');
+      
        if(res){
+        this.checkExistsUserID(res);
         user_data['email'] = this.state.email;
         user_data['password']=  this.state.password;
         user_data['login'] = 'yes';
@@ -47,6 +55,39 @@ export default class Login extends Component {
        }
       })
      .catch(error => this.setState({ errorMessage: error.message }))
+  }
+
+  checkExistsUserID(res){
+    const uId = _.get(res,'user.uid','');
+    database()
+    .ref(`/users`)
+    .on('value', snapshot => {
+      console.log('User data: ', snapshot.val());
+      const record = snapshot.val();
+        const valueRecord = _.find(record,{ id :  uId});
+        if(!valueRecord) {
+          this.createNewUserFirebase(res);
+        }
+    });
+  }
+
+  createNewUserFirebase(res){
+    const uId = _.get(res,'user.uid','');
+    const email = _.get(res,'user.email','');
+
+  const newReference = database()
+    .ref('/users')
+    .push();
+  
+  console.log('Auto generated key: ', newReference.key);
+  
+  newReference
+    .set({
+      email: email,
+      status: 1,
+      id: uId,
+    })
+    .then(() => console.log('Data updated.'));
   }
  
       componentDidMount(){

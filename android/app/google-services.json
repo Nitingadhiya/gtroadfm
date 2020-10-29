@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "673947167664",
+    "firebase_url": "https://parmeet-b2bef.firebaseio.com",
+    "project_id": "parmeet-b2bef",
+    "storage_bucket": "parmeet-b2bef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673947167664:android:3a96a3daa8c968bb304475",
+        "android_client_info": {
+          "package_name": "com.augmentai.gtroadfm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "673947167664-vgc46s1cfa34fadrp5okamglt06mvaoh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCf-7n8ZCqnWw9XJUIIe5omsRaN_dxwbLI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "673947167664-vgc46s1cfa34fadrp5okamglt06mvaoh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

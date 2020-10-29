@@ -90,7 +90,7 @@ export default class LiveChat extends React.Component {
         renderBubble={this.renderBubble}
         // renderComposer={this.renderComposer}
         isTyping = {true}
-        containerStyle={{backgroundColor: '#3A4667' }}
+        containerStyle={{backgroundColor: '#3A4667'}}
         placeholderTextColor="#fff"
         listViewProps = {
           {backgroundColor: '#323D5B'} 

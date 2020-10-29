@@ -3,6 +3,7 @@ import {Text, View , StyleSheet , ScrollView , Image, ImageBackground , Dimensio
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import database from '@react-native-firebase/database';
 
 
 export const BUTTON_HEIGHT = RFValue(60);
@@ -19,8 +20,7 @@ const web =  require('../../assets/homeicons/web.png');
 const yt =  require('../../assets/homeicons/yt.png');
 
 
-function HomeScreen  ({ navigation }) {   
-  
+function HomeScreen  ({ navigation }) {     
 
   return (    
     <ImageBackground source={image} style={styles.image}>
