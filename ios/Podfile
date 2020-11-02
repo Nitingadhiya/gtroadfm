@@ -1,4 +1,4 @@
-platform :ios, '9.0'
+platform :ios, '10.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 def add_flipper_pods!(versions = {})
@@ -44,6 +44,9 @@ def flipper_post_install(installer)
   end
 end
 
+$FirebaseSDKVersion = '6.34.0'
+$RNFirebaseAsStaticFramework = true
+
 target 'audiomessage' do
   # Pods for audiomessage
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
@@ -79,11 +82,9 @@ target 'audiomessage' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'Firebase/Core'
+  pod 'Firebase/Database'
 
-  target 'audiomessageTests' do
-    inherit! :complete
-    # Pods for testing
-  end
 
   use_native_modules!
 
@@ -94,14 +95,5 @@ target 'audiomessage' do
   add_flipper_pods!
   post_install do |installer|
     flipper_post_install(installer)
-  end
-end
-
-target 'audiomessage-tvOS' do
-  # Pods for audiomessage-tvOS
-
-  target 'audiomessage-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
   end
 end

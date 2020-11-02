@@ -1,5 +1,6 @@
 import * as React from "react";
 import {Text, View , StyleSheet , ScrollView , Image, ImageBackground , Dimensions, Linking, Platform} from "react-native";
+
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
@@ -18,7 +19,6 @@ const tw =  require('../../assets/homeicons/tw.png');
 const insta =  require('../../assets/homeicons/insta.png');
 const web =  require('../../assets/homeicons/web.png');
 const yt =  require('../../assets/homeicons/yt.png');
-
 
 function HomeScreen  ({ navigation }) {     
 
