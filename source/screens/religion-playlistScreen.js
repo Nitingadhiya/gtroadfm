@@ -89,21 +89,20 @@ export default function ReligionSong() {
     global.playbackTrack = 'local-track-religion';
     //await TrackPlayer.reset();
     const currentTrack = await TrackPlayer.getCurrentTrack();
-    console.log(currentTrack, 'traxk');
     if (
       currentTrack == null ||
       playbackState == '0' ||
       playbackState == 'none'
     ) {
       await TrackPlayer.reset();
-
+      console.log(trackImage,'trackImage');
       await TrackPlayer.add({
         id: 'local-track-religion',
-        url: 'https://s4.radio.co/s102c1ce5f/listen?mp3',
+        url: 'https://s3.radio.co/s4137c52f5/listen',//'https://s4.radio.co/s102c1ce5f/listen?mp3',
         title: 'GT ROAD',
         artist: 'FM Radio',
-        artwork:
-          'https://static.wixstatic.com/media/2a729d_83bb55a9bb0b4dd8b24646c7079e3be2~mv2_d_3600_3747_s_4_2.png/v1/fill/w_140,h_142,al_c,q_85,usm_0.66_1.00_0.01/FM%20logo.webp',
+        artwork:trackImage
+          //'https://static.wixstatic.com/media/2a729d_83bb55a9bb0b4dd8b24646c7079e3be2~mv2_d_3600_3747_s_4_2.png/v1/fill/w_140,h_142,al_c,q_85,usm_0.66_1.00_0.01/FM%20logo.webp',
       });
       setModalVisible(true);
 
@@ -150,7 +149,7 @@ export default function ReligionSong() {
   async function getSOngName() {
     try {
       let response = await fetch(
-        'https://public.radio.co/stations/s102c1ce5f/status',
+        'https://public.radio.co/stations/s4137c52f5/status',
       );
       let json = await response.json();
       console.log(
@@ -162,6 +161,7 @@ export default function ReligionSong() {
       setSongNameReligion(playingsong);
       if (json.current_track) {
         const image = json.current_track.artwork_url_large;
+        console.log(image,'image')
         console.log(image, 'image');
         setAutoTrackImage(image);
       }
