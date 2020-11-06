@@ -98,7 +98,7 @@ export default function ReligionSong() {
       console.log(trackImage,'trackImage');
       await TrackPlayer.add({
         id: 'local-track-religion',
-        url: 'https://s3.radio.co/s4137c52f5/listen',//'https://s4.radio.co/s102c1ce5f/listen?mp3',
+        url: 'https://s4.radio.co/s102c1ce5f/listen',
         title: 'GT ROAD',
         artist: 'FM Radio',
         artwork:trackImage
