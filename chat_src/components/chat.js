@@ -11,7 +11,8 @@ import {
     Alert,
     KeyboardAvoidingView, 
     StyleSheet,
-    SafeAreaView
+    SafeAreaView,
+    Keyboard
 } from "react-native";
 import { AudioRecorder, AudioUtils } from "react-native-audio";
 import propTypes from "prop-types";
@@ -81,7 +82,8 @@ export default class Chat extends Component {
             IncludeBase64: true,
             AudioEncodingBitRate: 32000
         },
-        disabledChatTextBox: false
+        disabledChatTextBox: false,
+        keyboardShow: false
     };
 
     async checkExistsUserID(){
@@ -110,6 +112,8 @@ export default class Chat extends Component {
       }
 
     componentWillMount() {
+        Keyboard.addListener("keyboardDidShow", this._keyboardDidShow);
+        Keyboard.addListener("keyboardDidHide", this._keyboardDidHide);
       this.checkExistsUserID();
         // console.log(AwsConfig, "awsconfig")
         // console.log(this.props, "chat props *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*--*-*-*-*-*-*-*-*-")
@@ -163,6 +167,8 @@ export default class Chat extends Component {
         });
     }
     componentWillUnmount() {
+        Keyboard.removeListener("keyboardDidShow", this._keyboardDidShow);
+        Keyboard.removeListener("keyboardDidHide", this._keyboardDidHide);
         this.setState({
             messages: []
         });
@@ -172,6 +178,20 @@ export default class Chat extends Component {
             this._onFinishedPlayingSubscription.remove();
     // this._onFinishedPlayingSubscription.remove();
     }
+
+    _keyboardDidShow = async () => {
+        await this.setState({
+            keyboardShow: true
+        })
+        //alert("Keyboard Shown");
+      };
+
+      _keyboardDidHide = async () => {
+        await this.setState({
+            keyboardShow: false
+        })
+        //alert("Keyboard Hidden");
+      };
 
     checkPermission() {
         if (Platform.OS !== "android") {
@@ -500,7 +520,9 @@ export default class Chat extends Component {
 
     }
 
-
+    renderViewStyle = ()=>{
+    return this.state.keyboardShow ? 0 : 40;
+    }
 
     render() {
         const { user } = this.props; // wherever you user info is
@@ -509,7 +531,7 @@ export default class Chat extends Component {
         const {disabledChatTextBox} = this.state;
         return (
             
-            <SafeAreaView style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: '#323D5B' }}>
                 {/* <NavigationBar
                     title={{ title: "chat" , tintColor: "white"}}
                     tintColor="3A4667"
@@ -519,16 +541,18 @@ export default class Chat extends Component {
                 /> */}
                 {this.renderLoading()}
                 {this.renderAndroidMicrophone()}
+             
                 <GiftedChat
                     messages={this.state.messages}
                     onSend={messages => this.onSend(messages)}
                     minInputToolbarHeight={0}
-                    renderChatFooter={()=> !disabledChatTextBox? <View style={{ height: 40}} /> : null}
+                   renderChatFooter={()=> !disabledChatTextBox? <View style={{ height: this.renderViewStyle(), backgroundColor: '#323D5B'}} /> : null}
                     renderInputToolbar={disabledChatTextBox ? () => null : undefined}
                     alwaysShowSend
                     showUserAvatar
                     isAnimated
                     showAvatarForEveryMessage
+                    isKeyboardInternallyHandled={true}
                     renderAvatar = {this.renderAvatar}
                     renderBubble={this.renderBubble}
                     messageIdGenerator={this.messageIdGenerator}
@@ -537,7 +561,8 @@ export default class Chat extends Component {
                     textInputStyle = {{color:'white', paddingLeft:30}}
                     containerStyle={{backgroundColor: '#3A4667', }}
                     placeholderTextColor="white"
-              
+                    isCustomViewBottom={true}
+                    bottomOffset={Platform.OS === "ios" && 210}
                     listViewProps = {
                         {backgroundColor: '#323D5B'} 
                     }
@@ -588,8 +613,9 @@ export default class Chat extends Component {
                         avatar: user.avatar
                     }}
                 />
-                <KeyboardAvoidingView />
-            </SafeAreaView>
+                <KeyboardAvoidingView behavior={'padding'} />
+                
+            </View>
             
         );
     }
