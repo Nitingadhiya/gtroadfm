@@ -226,7 +226,8 @@ export default function ReligionSong() {
 
   renderModalView = () => {
     const injectedJavaScript = `(function() {
-      document.querySelector('.popout').style.display = 'none'; document.querySelector('.radioco-player').style.backgroundColor = 'rgba(0,0,0,0.5)'; 
+      document.querySelector('.popout').style.display = 'none'; 
+      document.querySelector('.radioco-player').style.backgroundColor = 'rgba(0,0,0,0.5)'; 
   })();`;
     return (
       <Modal
@@ -244,6 +245,13 @@ export default function ReligionSong() {
               activeOpacity={1}
               onPress={() => console.log('disable')}>
               <View style={styles.subModalView}>
+              <TouchableOpacity 
+                  onPress={()=>setModalVisible(!modalReligionVisible)}
+                  style={styles.touchableCloseStyle}
+                  activeOpacity={1}
+                >
+                  <MIcon name="close" size={20} color={'#fff'} />
+                </TouchableOpacity>
               <WebView source={{ uri: 'https://embed.radio.co/player/2c6c095.html' }} injectedJavaScript={injectedJavaScript} />
                 {/* <View style={styles.trackImageModalView}>
                   {trackImage ? (
@@ -442,6 +450,14 @@ async function skipToPrevious() {
 }
 
 const styles = StyleSheet.create({
+  touchableCloseStyle: { 
+    position: 'absolute', 
+    zIndex: 1, 
+    right:3 , 
+    top: 3, 
+    borderRadius: 30, 
+    height: 30, width: 30, backgroundColor: '#3A4667', justifyContent: 'center', alignItems: 'center'
+  },
   songStyles: {
     flexDirection: 'row',
     alignSelf: 'center',
@@ -563,8 +579,8 @@ const styles = StyleSheet.create({
   },
   subModalView: {
     backgroundColor: '#3A4667',
-    width: width - 50,
-    height: 442,//height / 1.5,
+    width: 350,
+    height: 448,
     borderRadius: 10,
     borderTopLeftRadius: RFPercentage(5),
     borderTopRightRadius: RFPercentage(5),

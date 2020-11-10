@@ -246,6 +246,13 @@ export default function LandingScreen({navigation}) {
               activeOpacity={1}
               onPress={() => console.log('disable')}>
               <View style={styles.subModalView}>
+                <TouchableOpacity 
+                  onPress={()=>setModalVisible(!modalVisible)}
+                  style={styles.touchableCloseStyle}
+                  activeOpacity={1}
+                >
+                  <MIcon name="close" size={20} color={'#fff'} />
+                </TouchableOpacity>
               <WebView source={{ uri: 'https://embed.radio.co/player/4d9adb6.html' }} injectedJavaScript={injectedJavaScript} />
                 {/* <View style={styles.trackImageModalView}>
                   {trackImage ? (
@@ -403,6 +410,14 @@ async function skipToPrevious() {
 }
 
 const styles = StyleSheet.create({
+  touchableCloseStyle: { 
+    position: 'absolute', 
+    zIndex: 1, 
+    right:3 , 
+    top: 3, 
+    borderRadius: 30, 
+    height: 30, width: 30, backgroundColor: '#3A4667', justifyContent: 'center', alignItems: 'center'
+  },
   songStyles: {
     flexDirection: 'row',
     alignSelf: 'center',
@@ -525,8 +540,10 @@ const styles = StyleSheet.create({
   },
   subModalView: {
     backgroundColor: '#3A4667',
-    width: width - 50,
-    height: 442,
+    width: 350,
+    height: 448,
+    flexDirection: 'row',
+    //  flex: 1,
     borderRadius: 10,
     alignSelf: 'center',
     justifyContent: 'center',
