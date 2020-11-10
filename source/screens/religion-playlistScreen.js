@@ -83,6 +83,8 @@ export default function ReligionSong() {
   }, []);
 
   async function toggleReligionPlayback() {
+    setModalVisible(true);
+    return;
     if (global.playbackTrack != 'local-track-religion') {
       await TrackPlayer.reset();
     }
@@ -223,6 +225,9 @@ export default function ReligionSong() {
   };
 
   renderModalView = () => {
+    const injectedJavaScript = `(function() {
+      document.querySelector('.popout').style.display = 'none'; document.querySelector('.radioco-player').style.backgroundColor = 'rgba(0,0,0,0.5)'; 
+  })();`;
     return (
       <Modal
         animationType="slide"
@@ -239,7 +244,8 @@ export default function ReligionSong() {
               activeOpacity={1}
               onPress={() => console.log('disable')}>
               <View style={styles.subModalView}>
-                <View style={styles.trackImageModalView}>
+              <WebView source={{ uri: 'https://embed.radio.co/player/2c6c095.html' }} injectedJavaScript={injectedJavaScript} />
+                {/* <View style={styles.trackImageModalView}>
                   {trackImage ? (
                     <Image
                       source={{
@@ -257,7 +263,7 @@ export default function ReligionSong() {
                       {renderPlayPauseButton()}
                     </View>
                   </View>
-                </View>
+                </View> */}
               </View>
             </TouchableOpacity>
           </View>
@@ -558,7 +564,7 @@ const styles = StyleSheet.create({
   subModalView: {
     backgroundColor: '#3A4667',
     width: width - 50,
-    height: height / 1.5,
+    height: 442,//height / 1.5,
     borderRadius: 10,
     borderTopLeftRadius: RFPercentage(5),
     borderTopRightRadius: RFPercentage(5),

@@ -87,6 +87,8 @@ export default function LandingScreen({navigation}) {
   }, []);
 
   async function togglePlayback() {
+    setModalVisible(true);
+    return;
     if (global.playbackTrack != 'local-track') {
       await TrackPlayer.reset();
     }
@@ -225,6 +227,9 @@ export default function LandingScreen({navigation}) {
   };
 
   renderModalView = () => {
+    const injectedJavaScript = `(function() {
+      document.querySelector('.popout').style.display = 'none'; document.querySelector('.radioco-player').style.backgroundColor = 'rgba(0,0,0,0.5)'; 
+  })();`;
     return (
       <Modal
         animationType="slide"
@@ -241,7 +246,8 @@ export default function LandingScreen({navigation}) {
               activeOpacity={1}
               onPress={() => console.log('disable')}>
               <View style={styles.subModalView}>
-                <View style={styles.trackImageModalView}>
+              <WebView source={{ uri: 'https://embed.radio.co/player/4d9adb6.html' }} injectedJavaScript={injectedJavaScript} />
+                {/* <View style={styles.trackImageModalView}>
                   {trackImage ? (
                     <Image
                       source={{
@@ -259,7 +265,7 @@ export default function LandingScreen({navigation}) {
                       {renderPlayPauseButton()}
                     </View>
                   </View>
-                </View>
+                </View> */}
               </View>
             </TouchableOpacity>
           </View>
@@ -520,8 +526,10 @@ const styles = StyleSheet.create({
   subModalView: {
     backgroundColor: '#3A4667',
     width: width - 50,
-    height: height / 1.5,
+    height: 442,
     borderRadius: 10,
+    alignSelf: 'center',
+    justifyContent: 'center',
     borderTopLeftRadius: RFPercentage(5),
     borderTopRightRadius: RFPercentage(5),
     borderBottomLeftRadius: RFPercentage(2),
