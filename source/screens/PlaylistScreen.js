@@ -242,6 +242,7 @@ export default function LandingScreen({navigation}) {
           activeOpacity={1}
           onPress={() => setModalVisible(!modalVisible)}>
           <View style={styles.modalMainView}>
+          <View style={{borderRadius: 10, overflow: 'hidden'}}>
             <TouchableOpacity
               activeOpacity={1}
               onPress={() => console.log('disable')}>
@@ -275,6 +276,7 @@ export default function LandingScreen({navigation}) {
                 </View> */}
               </View>
             </TouchableOpacity>
+          </View>
           </View>
         </TouchableOpacity>
       </Modal>
