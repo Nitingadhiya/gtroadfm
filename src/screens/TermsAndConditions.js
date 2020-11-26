@@ -28,7 +28,7 @@ class TermsAndConditions extends Component{
                           
                       </View>
                       <View style={styles.container2} >
-                          <Text style={styles.HeadingText} > Age requirement</Text>
+                          <Text style={styles.HeadingText} >Age requirement</Text>
                       </View>
                       <View style={styles.container3} > 
                           {/* <Text style={styles.SubHeadingText/Bold}>Service</Text> */}
@@ -36,7 +36,7 @@ class TermsAndConditions extends Component{
                          
                       </View>
                       <View style={styles.container2} >
-                          <Text style={styles.HeadingText} > Billing and payments</Text>
+                          <Text style={styles.HeadingText} >Billing and payments</Text>
 
                       </View>
                       <View style={styles.container3} >
@@ -167,6 +167,7 @@ class TermsAndConditions extends Component{
 
 const styles = StyleSheet.create({
   containerx: {
+    padding: 15,
     // flex: 1,
     // resizeMode: "center",
     // justifyContent: "center",
@@ -179,7 +180,7 @@ const styles = StyleSheet.create({
   },
     container: {
       flex: 1,
-      width: "90%",
+      width: "100%",
 
       // justifyContent: "center",
       paddingTop: 20,
@@ -201,7 +202,8 @@ const styles = StyleSheet.create({
     HeadingText:{
       fontSize: RFValue(24),
       color: "white",
-      fontWeight: "600"
+      fontWeight: "600",
+      //marginLeft: -5,
     },
     SubHeadingText:{
       // flex:1,
@@ -230,7 +232,7 @@ const styles = StyleSheet.create({
         // borderBottomColor: "rgba(158, 150, 150, .5);",
         // borderTopColor: "rgba(158, 150, 150, .5);",
         // paddingLeft:"5%"
-        padding:10
+        //padding:10
     },
     image: {
       flex: 1,
@@ -260,11 +262,9 @@ const styles = StyleSheet.create({
     },
     scrollViewStyle:{
       height:60,
-      width : "90%",
+      width : "100%",
       alignContent:"center",
-      alignSelf:"center",
-      paddingLeft:10,
-      
+      alignSelf:"center",      
     },
     images:{
         maxWidth:250,

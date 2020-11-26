@@ -30,8 +30,8 @@ class PrivacyPolicy extends Component{
                           <Text style={styles.SubHeadingText}>We use your data to provide and improve the Service. By using the Service, you agree to the collection and use of information in accordance with this policy. Unless otherwise defined in this Privacy Policy, the terms used in this Privacy Policy have the same meanings as in our Terms and Conditions.</Text>
 
                       </View>
-                      <View style={styles.container2} >
-                          <Text style={styles.HeadingText} > Definitions</Text>
+                      <View style={styles.container2}>
+                          <Text style={styles.HeadingText}>Definitions</Text>
                       </View>
                       <View style={styles.container3} > 
                           <Text style={styles.SubHeadingTextBold}>Service</Text>
@@ -53,14 +53,14 @@ class PrivacyPolicy extends Component{
 
                       </View>
                       <View style={styles.container2} >
-                          <Text style={styles.HeadingText} > Information Collection</Text>
-                          <Text style={styles.HeadingText} > and Use</Text>
+                          <Text style={styles.HeadingText} >Information Collection</Text>
+                          <Text style={styles.HeadingText} >and Use</Text>
                       </View>
                       <View style={styles.container3} >
                             <Text style={styles.SubHeadingText}>We collect several different types of information for various purposes to provide and improve our Service to you.</Text>
                       </View>
                       <View style={styles.container2} >
-                          <Text style={styles.HeadingText} > Types of Data Collected</Text>
+                          <Text style={styles.HeadingText} >Types of Data Collected</Text>
                       </View>
                       <View style={styles.container3} > 
                           <Text style={styles.SubHeadingTextBold}>Personal Data</Text>
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     },
       container: {
         flex: 1,
-        width: "90%",
+        width: "100%",
         // justifyContent: "center",
         paddingTop: 20,
         maxHeight: (Dimensions.get("window").height * .706) -150,
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
         textAlign: "justify",
       },
       container3:{  
-        padding:10
+       // padding:10
           // borderBottomWidth: StyleSheet.hairlineWidth,
           // borderTopWidth: 0,
           // borderBottomColor: "rgba(158, 150, 150, .5);",
@@ -328,10 +328,10 @@ const styles = StyleSheet.create({
       },
       scrollViewStyle:{
         height:60,
-        width : "90%",
+        width : "100%",
         alignContent:"center",
         alignSelf:"center",
-        paddingLeft:10,
+        paddingHorizontal:15,
         
       },
       images:{

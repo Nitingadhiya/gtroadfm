@@ -27,7 +27,7 @@ function HomeScreen  ({ navigation }) {
       
           <Image source={logoImage2} style={styles.logoimage} />
               <View style={styles.container} >
-                <Text style = {styles.welcomeText}>Social Profiles</Text>
+                <Text style = {styles.welcomeText}>Follow Us</Text>
               <View style ={styles.row1}>
               <TouchableOpacity onPress={()=>{if(Platform.OS === "ios"){Linking.openURL('fb://profile/314364109489774');}else{ Linking.openURL('https://www.facebook.com/gtroad.fm'); console.log('https://www.facebook.com/gtroad.fm');}}}   ><Image source={fb} style={styles.image3} /></TouchableOpacity>
                 <TouchableOpacity onPress={()=>{Linking.openURL('https://twitter.com/gtroadfm');}}  ><Image source={tw} style={styles.image3} /></TouchableOpacity>

@@ -44,6 +44,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 // const ImagePicker = require("react-native-image-picker");
 
 let xyz = true;
+const {width, height} = Dimensions.get('window')
 
 
 export default class Chat extends Component {
@@ -521,7 +522,7 @@ export default class Chat extends Component {
     }
 
     renderViewStyle = ()=>{
-    return this.state.keyboardShow ? 0 : 40;
+   // return this.state.keyboardShow ? 0 : 40;
     }
 
     render() {
@@ -531,7 +532,7 @@ export default class Chat extends Component {
         const {disabledChatTextBox} = this.state;
         return (
             
-            <View style={{ flex: 1, backgroundColor: '#323D5B' }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#323D5B' }}>
                 {/* <NavigationBar
                     title={{ title: "chat" , tintColor: "white"}}
                     tintColor="3A4667"
@@ -541,13 +542,13 @@ export default class Chat extends Component {
                 /> */}
                 {this.renderLoading()}
                 {this.renderAndroidMicrophone()}
-             
+             <KeyboardAvoidingView style={{ flex: 1}}>
                 <GiftedChat
                     messages={this.state.messages}
                     onSend={messages => this.onSend(messages)}
-                    minInputToolbarHeight={0}
-                   renderChatFooter={()=> !disabledChatTextBox? <View style={{ height: this.renderViewStyle(), backgroundColor: '#323D5B'}} /> : null}
-                    renderInputToolbar={disabledChatTextBox ? () => null : undefined}
+                    //minInputToolbarHeight={50}
+                //    renderChatFooter={()=> !disabledChatTextBox? <View style={{ height: this.renderViewStyle(), backgroundColor: '#323D5B'}} /> : null}
+                //     renderInputToolbar={disabledChatTextBox ? () => null : undefined}
                     alwaysShowSend
                     showUserAvatar
                     isAnimated
@@ -562,7 +563,7 @@ export default class Chat extends Component {
                     containerStyle={{backgroundColor: '#3A4667', }}
                     placeholderTextColor="white"
                     isCustomViewBottom={true}
-                    bottomOffset={Platform.OS === "ios" && 210}
+                   bottomOffset={ Platform.OS == 'ios' && ( height > 893 ? 30 : 1)}
                     listViewProps = {
                         {backgroundColor: '#323D5B'} 
                     }
@@ -613,9 +614,9 @@ export default class Chat extends Component {
                         avatar: user.avatar
                     }}
                 />
-                <KeyboardAvoidingView behavior={'padding'} />
-                
-            </View>
+                {/* <KeyboardAvoidingView behavior={'padding'} /> */}
+                </KeyboardAvoidingView>
+            </SafeAreaView>
             
         );
     }
